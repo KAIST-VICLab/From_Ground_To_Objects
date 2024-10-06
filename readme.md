@@ -41,14 +41,11 @@
 
 ## Data Prepare
 
----
 Download dynamic object masks for Cityscapes dataset from [DynamicDepth github](https://github.com/AutoAILab/DynamicDepth)
 
 
 ## Pretraind Model
 
-
----
 Pretrained models can be downloaded from [here](https://drive.google.com/drive/folders/1C9SHo3_sRe1OYBREKhxXsDCosuXGZNK6?usp=drive_link)
 
 Put model checkpoints (`mono_encoder.pth` & `mono_depth.pth`) in `/checkpoints/MonoViT/`
@@ -68,7 +65,6 @@ Precomputed results (`disparity_map` & `error_map`) can be downloaded from [here
 
 ## Test
 
----
 ```
 # Test pretrained MonoViT with our proposed method on Cityscapes dataset
 python test.py --config ./configs/test_monovit_cs.yaml
@@ -81,7 +77,6 @@ python test.py --config ./configs/test_monovit_cs.yaml
 
 ## Citation
 
----
 If you find this work useful, please consider citing:
 ```BibTex
 @inproceedings{moon2024ground,
@@ -96,7 +91,6 @@ If you find this work useful, please consider citing:
 
 ## Reference
 
----
 Monodepth: https://github.com/nianticlabs/monodepth2
 
 MonoViT: https://github.com/zxcqlf/MonoViT
@@ -105,5 +99,4 @@ DynamicDepth: https://github.com/AutoAILab/DynamicDepth
 
 ## Acknowledgement
 
----
 This work was supported by the Institute of Information & communications Technology Planning & Evaluation (IITP) grant funded by the Korea government (MSIT): No. 2021-0-00087, Development of high-quality conversion technology for SD/HD low-quality media and No. RS2022-00144444, Deep Learning Based Visual Representational Learning and Rendering of Static and Dynamic Scenes.
