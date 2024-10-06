@@ -35,20 +35,19 @@ class MonoDataset(data.Dataset):
     """Superclass for monocular dataloaders
     """
     def __init__(self,
-                 data_path,
                  filenames,
+                 opt,
                  height,
                  width,
                  frame_idxs,
                  num_scales,
                  is_train=False,
-                 img_ext='.png',
-                 mask_noise=False,
-                 demo=False
+                 img_ext='.png'
                  ):
         super(MonoDataset, self).__init__()
 
-        self.data_path = data_path
+        self.opt = opt
+        self.data_path = self.opt['path']['data_path']
         self.filenames = filenames
         self.height = height
         self.width = width
@@ -59,12 +58,12 @@ class MonoDataset(data.Dataset):
         self.frame_idxs = frame_idxs
 
         self.is_train = is_train
+        self.get_seg = self.opt['training']['get_seg']
+        self.sem_path = self.opt['path']['sem_path']
         self.img_ext = img_ext
 
         self.loader = pil_loader
         self.to_tensor = transforms.ToTensor()
-        self.mask_noise = mask_noise
-        self.demo = demo
 
         # We need to specify augmentations differently in newer versions of torchvision.
         # We first try the newer tuple version; if this fails we fall back to scalars
@@ -113,11 +112,8 @@ class MonoDataset(data.Dataset):
                 else:
                     inputs[(n + "_aug", im, i)] = self.to_tensor(color_aug(f))
 
-        if self.mask_noise:
+        if type(self).__name__ in ["CityscapesEvalDataset"]:
             inputs["doj_mask"] = self.resize[0](inputs["doj_mask"]); inputs["doj_mask"] = self.to_tensor(inputs["doj_mask"])
-            if type(self).__name__ in ["CityscapesPreprocessedDataset", "KITTIRAWDataset"]:
-                inputs["doj_mask-1"] = self.resize[0](inputs["doj_mask-1"]); inputs["doj_mask-1"] = self.to_tensor(inputs["doj_mask-1"])
-                inputs["doj_mask+1"] = self.resize[0](inputs["doj_mask+1"]); inputs["doj_mask+1"] = self.to_tensor(inputs["doj_mask+1"])
 
 
     def __len__(self):
@@ -159,10 +155,7 @@ class MonoDataset(data.Dataset):
         if type(self).__name__ in ["CityscapesPreprocessedDataset", "CityscapesEvalDataset"]:
             inputs.update(self.get_colors(folder, frame_index, side, do_flip))
             if type(self).__name__ in ["CityscapesPreprocessedDataset"]:
-                inputs[("color_path", 0)] = self.get_color_path(
-                    folder, frame_index)
-            if self.mask_noise:
-                inputs.update(self.get_doj_mask(folder, frame_index, side, do_flip))
+                inputs[("color_path", 0)] = self.get_color_path(folder, frame_index)
         else:
             for i in self.frame_idxs:
                 if i == "s":
@@ -206,6 +199,12 @@ class MonoDataset(data.Dataset):
             color_aug = transforms.ColorJitter(self.brightness, self.contrast, self.saturation, self.hue)
         else:
             color_aug = (lambda x: x)
+
+        if self.get_seg:
+            if type(self).__name__ in ["CityscapesEvalDataset"]:
+                inputs.update(self.get_doj_mask(folder, frame_index, side, do_flip))
+            else:
+                self.get_seg_mask(inputs)
 
         self.preprocess(inputs, color_aug)
 

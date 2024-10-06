@@ -23,20 +23,6 @@ class CityscapesEvalDataset(MonoDataset):
     def __init__(self, *args, **kwargs):
         super(CityscapesEvalDataset, self).__init__(*args, **kwargs)
 
-        if self.demo:
-            filtered_file_names = []
-            for file_name in self.filenames:
-                city, frame_name = file_name.split()
-                prev_name = self.get_offset_framename(frame_name, offset=-2)
-                if not os.path.exists(self.get_image_path(city, prev_name, None, False)):
-                    continue
-                next_name = self.get_offset_framename(frame_name, offset=2)
-                if not os.path.exists(self.get_image_path(city, next_name, None, False)):
-                    continue
-                filtered_file_names.append(file_name)
-            self.filenames = filtered_file_names
-
-
     def index_to_folder_and_frame_idx(self, index):
         """Convert index in the dataset to a folder name, frame_idx and any other bits
 
@@ -55,14 +41,8 @@ class CityscapesEvalDataset(MonoDataset):
         # adapted from sfmlearner
         split = "test"  # if self.is_train else "val"
 
-        if self.demo:
-            for cam_path in os.listdir(os.path.join(self.data_path, 'camera', split, city)):
-                if cam_path.split("_")[1] == frame_name.split("_")[1]:
-                    camera_file = os.path.join(self.data_path, 'camera', split, city, cam_path)
-                    break
-        else:
-            camera_file = os.path.join(self.data_path, 'camera',
-                                       split, city, frame_name + '_camera.json')
+        camera_file = os.path.join(self.data_path, 'camera',
+                                   split, city, frame_name + '_camera.json')
         with open(camera_file, 'r') as f:
             camera = json.load(f)
         fx = camera['intrinsic']['fx']

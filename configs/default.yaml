@@ -1,0 +1,72 @@
+system:
+  gpu: 0
+  batch_size: 12
+  num_workers: 8
+path:
+  data_path: ../Datasets/CS/
+  sem_path: ../Datasets/CS/instance_segmentation/
+  log_dir: ./logs
+  splits_dir: ./splits
+dataset:
+  train_dataset: cityscapes_preprocessed  # ["kitti", "kitti_odom", "kitti_depth", "kitti_test", "cityscapes_preprocessed"]
+  train_split: cityscapes_preprocessed # ["eigen_zhou", "eigen_full", "odom", "benchmark", "cityscapes_preprocessed"]
+  eval_split: cityscapes  # ["eigen", "eigen_benchmark", "benchmark", "odom_9", "odom_10", "cityscapes"]
+single_depth_model:
+  encoder_type:   # Resnet, ViT
+  decoder_type:   # base, ViT
+  num_layers: 18    # [18, 34, 50, 101, 152]
+  scales: [0, 1, 2, 3]
+  weights_init: pretrained
+  cadepth: False
+pose_model:
+  model_name: Resnet
+  num_layers: 18    # [18, 34, 50, 101, 152]
+  weights_init: pretrained
+training:
+  png: True
+  height: 192
+  width: 640
+  disparity_smoothness: 0.001
+  ground_disparity_smoothness: 0
+  reproj_back: False
+  get_seg: False
+  gds_weight: 0
+  min_depth: 0.1
+  max_depth: 100.0
+  frame_ids: [0, -1, 1]
+  v1_multiscale: False
+  avg_reprojection: False
+  disable_automasking: False
+  no_ssim: False
+  use_future_frame: False
+  num_matching_frames: 1
+  disable_motion_masking: False
+  no_matching_augmentation: False
+optimization:
+  learning_rate: 1e-4
+  encoder_learning_rate: 5e-5
+  lr_scheduler: Step
+  num_epochs: 20
+  scheduler_step_size: 15
+  freeze_pose: False
+  freeze_pose_epoch: 20
+  freeze_pose_step: -1
+  pytorch_random_seed: 1
+eval:
+  eval_mono: True
+  disable_median_scaling: False
+  pred_depth_scale_factor: 1
+  eval_teacher: False
+  save_disp: False
+  save_error: False
+  save_color: False
+  save_gt_disp: False
+  ext_disp_to_eval:
+loading:
+  load_weights_folder:
+  mono_weights_folder:
+  models_to_load:
+logging:
+  log_frequency: 1000
+  save_frequency: 1
+  save_intermediate_models: False

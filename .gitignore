@@ -1,0 +1,9 @@
+/splits/
+/pretrained_models/
+/logs/
+/train.py
+/trainer.py
+__pycache__/
+*.idea
+/checkpoints/
+/Test_Result/

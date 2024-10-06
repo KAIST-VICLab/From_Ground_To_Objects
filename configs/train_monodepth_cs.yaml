@@ -1,0 +1,37 @@
+system:
+  gpu: 0
+  batch_size: 32
+path:
+  data_path: /ssd/Datasets/CS/
+  sem_path: /ssd/Datasets/CS/instance_segmentation/
+  log_dir: ./logs
+  splits_dir: ./splits
+dataset:
+  train_dataset: cityscapes_preprocessed  # ["kitti", "kitti_odom", "kitti_depth", "kitti_test", "cityscapes_preprocessed"]
+  train_split: cityscapes_preprocessed # ["eigen_zhou", "eigen_full", "odom", "benchmark", "cityscapes_preprocessed"]
+  eval_split: cityscapes  # ["eigen", "eigen_benchmark", "benchmark", "odom_9", "odom_10", "cityscapes"]
+single_depth_model:
+  encoder_type: Resnet  # Resnet, ResnetSA, ViT
+  decoder_type: base  # base, DDV, ViT
+  num_layers: 18    # [18, 34, 50, 101, 152]
+  scales: [0, 1, 2, 3]
+  num_output_channels: 1
+  weights_init: pretrained
+  cadepth: False
+training:
+  height: 192
+  width: 640
+  disparity_smoothness: 0
+  ground_disparity_smoothness: 0.001
+  reproj_back: True
+  get_seg: True
+  gds_weight: 100
+  inst_dilate_iter: 10
+  bd_dilate_iter: 1
+logging:
+  log_frequency: 1000
+optimization:
+  learning_rate: 1e-4
+  encoder_learning_rate: 1e-4
+  lr_scheduler: Step
+  pytorch_random_seed: 1

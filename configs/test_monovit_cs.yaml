@@ -1,0 +1,39 @@
+system:
+  gpu: 0
+  batch_size: 12
+  num_workers: 4
+path:
+  data_path: /ssd/Datasets/CS/
+  sem_path: /ssd/Datasets/CS/instance_segmentation/
+  log_dir: ./Test_Result
+
+  splits_dir: ./splits
+dataset:
+  eval_split: cityscapes  # ["eigen", "eigen_benchmark", "benchmark", "odom_9", "odom_10", "cityscapes"]
+loading:
+  load_weights_folder: ./checkpoints/MonoViT
+training:
+  get_seg: True
+eval:
+  save: True
+  eval_teacher: True
+  eval_object: True
+  min_depth: 0.1
+  max_depth: 80.0
+  num_matching_frames: 1
+  eval_stereo: False
+  eval_mono: True
+  eval_multi: False
+  height: 192
+  width: 640
+  save_disp: True
+  save_error: True
+  save_color: False
+single_depth_model:
+  encoder_type: ViT  # Resnet, ViT
+  decoder_type: ViT  # base, ViT
+  num_output_channels: 1
+  num_layers: 18    # [18, 34, 50, 101, 152]
+  scales: [0, 1, 2, 3]
+  weights_init: pretrained
+  cadepth: False
