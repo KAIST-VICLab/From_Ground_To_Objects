@@ -5,7 +5,7 @@
 <div>    
     <a href='https://sites.google.com/view/jaehomoon/' target='_blank'>Jaeho Moon</a>&nbsp;
     <a href='https://sites.google.com/view/juan-luis-gb' target='_blank'>Juan Luis Gonzalez Bello</a>&nbsp;
-    Byeongjun Kwon&nbsp;
+    <a href='https://www.viclab.kaist.ac.kr/' target='_blank'>Byeongjun Kwon</a>&nbsp;
     <a href='https://www.viclab.kaist.ac.kr/' target='_blank'>Munchurl Kim</a><sup>†</sup>
 </div>
 <div>
