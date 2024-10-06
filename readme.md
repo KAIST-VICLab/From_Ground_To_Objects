@@ -9,7 +9,7 @@
     <a href='https://www.viclab.kaist.ac.kr/' target='_blank'>Munchurl Kim</a><sup>†</sup>
 </div>
 <div>
-    <sup>†</sup>Co-corresponding author</span>
+    <sup>†</sup>Corresponding author</span>
 </div>
 <div>
     Korea Advanced Institute of Science and Technology, South Korea
